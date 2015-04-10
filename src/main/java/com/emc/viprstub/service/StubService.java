@@ -1,6 +1,7 @@
 package com.emc.viprstub.service;
 
 import com.emc.viprstub.json.*;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface StubService {
 
     List<ViprProject> getViprProjects();
 
-    void exportBlockVolumeToHost(String blockVolumeId, String hostId);
+    void exportBlockVolumeToHost(ExportBlockVolumeRequest request);
 
     List<Host> getHosts();
 
@@ -29,7 +30,7 @@ public interface StubService {
 
     VirtualPool createVirtualPool(CreateBlockVirtualPoolsRequest request);
 
-    VirtualPool assignStoragePools(String virtualPoolId, List<String> storagePoolIds);
+    VirtualPool assignStoragePools(String virtualPoolId, AssignStoragePoolsRequest request);
 
     StoragePool getStoragePoolInfo(String storagePoolId);
 
@@ -44,4 +45,6 @@ public interface StubService {
     Initiator getInitiator(String initiatorId);
 
     ViprTask deleteBlockVolume(String blockVolumeId);
+
+    String getInitiatorsByHostId(String id);
 }
