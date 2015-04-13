@@ -2,10 +2,19 @@ package com.emc.viprstub.web.controller;
 
 import com.emc.viprstub.json.*;
 import com.emc.viprstub.service.StubService;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,14 +28,17 @@ public class DogeController {
     @Autowired
     private StubService stubService;
 
+
+    @RequestMapping(value="/login", method = RequestMethod.GET)
+    public ResponseEntity<String> login() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-SDS-AUTH-TOKEN", "token");
+        return new ResponseEntity<>(new JSONObject().put("login", "ok").toString(), headers, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
         return new JSONObject().put("тест", "хуетест").toString();
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
-    public String getToken() {
-        return stubService.getToken();
     }
 
     @RequestMapping(value = "/block/volumes.json", method = RequestMethod.POST)
@@ -110,7 +122,19 @@ public class DogeController {
     }
 
     @RequestMapping(value = "/vdc/storage-pools.json", method = RequestMethod.GET)
-    public @ResponseBody List<StoragePool> getStoragePools() {
-        return stubService.getStoragePoolsReferences();
+    public @ResponseBody String getStoragePools() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
+        ObjectNode response = jsonNodeFactory.objectNode();
+        ArrayNode storagePools = jsonNodeFactory.arrayNode();
+        ObjectNode storagePool = jsonNodeFactory.objectNode();
+        stubService.getStoragePoolsReferences().stream().forEach(reference -> {
+            storagePools.add(mapper.convertValue(reference, JsonNode.class));
+        });
+        response.put("storage_pool", storagePools);
+
+
+        return response.toString();
     }
 }

@@ -434,4 +434,20 @@ public class StoragePool {
     public void setStorageSystem(StorageSystem storageSystem) {
         this.storageSystem = storageSystem;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StoragePool that = (StoragePool) o;
+
+        return !(id != null ? !id.equals(that.id) : that.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
