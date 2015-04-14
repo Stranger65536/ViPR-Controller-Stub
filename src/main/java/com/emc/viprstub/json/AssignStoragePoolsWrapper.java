@@ -13,13 +13,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssignStoragePoolsWrapper {
     @JsonProperty("storage_pool")
-    private List<StoragePool> storagePools = new ArrayList<>();
+    private List<String> storagePoolsIds = new ArrayList<>();
 
-    public List<StoragePool> getStoragePools() {
-        return storagePools;
+    public List<String> getStoragePoolsIds() {
+        return storagePoolsIds;
     }
 
-    public void setStoragePools(List<StoragePool> storagePools) {
-        this.storagePools = storagePools;
+    public void setStoragePoolsIds(List<String> storagePoolsIds) {
+        this.storagePoolsIds = storagePoolsIds;
     }
 }

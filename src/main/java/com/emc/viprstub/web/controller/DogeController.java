@@ -92,8 +92,8 @@ public class DogeController {
     }
 
     @RequestMapping(value = "/vdc/varrays.json", method = RequestMethod.GET)
-    public @ResponseBody List<VirtualArray> getVirtualArrays() {
-        return stubService.getVirtualArrays();
+    public @ResponseBody String getVirtualArrays() {
+        return new JSONObject().put("varray", stubService.getVirtualArrays()).toString();
     }
 
     @RequestMapping(value = "/block/vpools.json", method = RequestMethod.GET)
@@ -128,10 +128,7 @@ public class DogeController {
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode response = jsonNodeFactory.objectNode();
         ArrayNode storagePools = jsonNodeFactory.arrayNode();
-        ObjectNode storagePool = jsonNodeFactory.objectNode();
-        stubService.getStoragePoolsReferences().stream().forEach(reference -> {
-            storagePools.add(mapper.convertValue(reference, JsonNode.class));
-        });
+        stubService.getStoragePoolsReferences().stream().forEach(reference -> storagePools.add(mapper.convertValue(reference, JsonNode.class)));
         response.put("storage_pool", storagePools);
 
 

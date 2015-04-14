@@ -242,7 +242,15 @@ public class StubServiceImpl implements StubService {
     public VirtualPool assignStoragePools(String virtualPoolId, AssignStoragePoolsRequest request) {
         VirtualPool virtualPool = virtualPools.get(virtualPoolId);
         if (virtualPool != null) {
-            virtualPool.setAssignedStoragePools(request.getAssignStoragePoolChanges().getAdd().getStoragePools());
+            List<StoragePool> assignedStoragePools = new LinkedList<>();
+            for (String poolId : request.getAssignStoragePoolChanges().getAdd().getStoragePoolsIds()) {
+                StoragePool storagePool = storagePools.get(poolId);
+                if (storagePool != null) {
+                    assignedStoragePools.add(storagePool);
+                }
+            }
+
+            virtualPool.setAssignedStoragePools(assignedStoragePools);
         }
         return virtualPool;
     }
