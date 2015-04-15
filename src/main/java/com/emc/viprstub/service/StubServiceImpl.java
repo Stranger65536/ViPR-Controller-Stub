@@ -25,9 +25,10 @@ public class StubServiceImpl implements StubService {
     private static final Map<String, VirtualPool> virtualPools = new ConcurrentHashMap<>();
     private static final Map<String, StoragePool> storagePools = new ConcurrentHashMap<>();
     private static final Map<String, ViprTask> tasks = new ConcurrentHashMap<>();
-    private static final Map<BlockVolume, Initiator> initiators = new ConcurrentHashMap<>();
+    private static final Map<String, Initiator> initiators = new ConcurrentHashMap<>();
+    private static final Map<BlockVolume, Host> exports = new ConcurrentHashMap<>();
     private static final Map<String, Host> hosts = new ConcurrentHashMap<>();
-    private static final ViprProject viprProject = new ViprProject();
+    private static final Map<String, ViprProject> viprProjects = new ConcurrentHashMap<>();
     private static final VirtualArray virtualArray = new VirtualArray();
 
 
@@ -41,10 +42,24 @@ public class StubServiceImpl implements StubService {
         virtualPool.setId("123");
         virtualPools.put("123", virtualPool);
 
+        ViprProject viprProject = new ViprProject();
         viprProject.setId("vipr_project_sample_id");
         viprProject.setName("sample_project_name");
+        viprProjects.put(viprProject.getId(), viprProject);
         virtualArray.setId("urn:storageos:VirtualArray:ca41c8a9-e47e-4b91-bef9-8212fd8bcb32:vdc1");
         virtualArray.setName("Virtual Array 0");
+
+        Host host = new Host();
+        host.setId("sample_host_id");
+        host.setHostName("10.76.86.130");
+        hosts.put(host.getId(), host);
+
+        Initiator initiator = new Initiator();
+        initiator.setId("initiator_id");
+        initiator.setHost(host);
+        initiator.setInactive(false);
+        initiators.put(initiator.getId(), initiator);
+
 
         StorageSystem vnx = new StorageSystem();
         vnx.setId("urn:storageos:StorageSystem:bbdc3765-e1c6-49f1-a42f-11129cbb2aa1:vdc1");
@@ -185,7 +200,7 @@ public class StubServiceImpl implements StubService {
         task.setEndTime(calendar.getTimeInMillis());
         task.setOperationId("task_" + UUID.randomUUID());
         Link taskLink = new Link();
-        taskLink.setReference(task.getOperationId());
+        taskLink.setReference("/tasks/" + task.getOperationId());
         task.setTaskLink(taskLink);
         task.setTaskState("pending");
         tasks.put(task.getOperationId(), task);
@@ -196,16 +211,19 @@ public class StubServiceImpl implements StubService {
 
     @Override
     public List<ViprProject> getViprProjects() {
-        return Collections.singletonList(viprProject);
+        List<ViprProject> list = new ArrayList<>();
+        list.addAll(viprProjects.values());
+        return list;
     }
 
     @Override
     public void exportBlockVolumeToHost(ExportBlockVolumeRequest request) {
-        ITL itl = new ITL();
-        Initiator initiator = new Initiator();
-        initiator.setId(request.getInitiatorIds().get(0));
-        itl.setInitiator(initiator);
-        initiators.put(request.getVolumes().get(0), initiator);
+//        ITL itl = new ITL();
+//        Initiator initiator = new Initiator();
+//        initiator.setId(request.getInitiatorIds().get(0));
+//        itl.setInitiator(initiator);
+        exports.put(request.getVolumes().get(0), hosts.values().stream().findFirst().get());
+        //initiators.put(request.getVolumes().get(0), initiator);
     }
 
 
@@ -282,13 +300,12 @@ public class StubServiceImpl implements StubService {
     public List<ITL> getExportsByVolume(String volumeId) {
         BlockVolume blockVolume = new BlockVolume();
         blockVolume.setId(volumeId);
-        Initiator initiator = initiators.get(blockVolume);
-        if (initiator != null) {
+        if (exports.containsKey(blockVolume)) {
             ITL itl = new ITL();
-            itl.setInitiator(initiator);
+            itl.setInitiator(initiators.values().stream().findFirst().get());
             return Collections.singletonList(itl);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -318,6 +335,21 @@ public class StubServiceImpl implements StubService {
     @Override
     public String getInitiatorsByHostId(String id) {
         return new JSONObject().put("initiator", initiators.values().toArray()).toString();
+    }
+
+    @Override
+    public ViprProject getViprProjectById(String id) {
+        return viprProjects.get(id);
+    }
+
+    @Override
+    public BlockVolume getBlockVolumeById(String id) {
+        return blockVolumes.get(id);
+    }
+
+    @Override
+    public Host getHostById(String id) {
+        return hosts.get(id);
     }
 
 

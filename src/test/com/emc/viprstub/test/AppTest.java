@@ -1,17 +1,27 @@
 package com.emc.viprstub.test;
 
 import com.emc.viprstub.config.ApplicationConfig;
+import com.emc.viprstub.config.WebConfig;
 import com.emc.viprstub.json.AssignStoragePoolChanges;
 import com.emc.viprstub.json.AssignStoragePoolsRequest;
 import com.emc.viprstub.json.AssignStoragePoolsWrapper;
 import com.emc.viprstub.json.StoragePool;
+import com.emc.viprstub.web.controller.DogeController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -21,12 +31,17 @@ import java.util.Collections;
  *         vladimir.belov-fedorov@emc.com
  */
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {
-//        ApplicationConfig.class })
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = AnnotationConfigWebContextLoader.class, classes = {
+        ApplicationConfig.class})
+@WebAppConfiguration
 public class AppTest {
 
+    @Autowired
+    private DogeController controller;
+
     @Test
+    @Ignore
     public void foo() throws IOException {
         AssignStoragePoolsRequest assignStoragePoolsRequest = new AssignStoragePoolsRequest();
         assignStoragePoolsRequest.setAssignStoragePoolChanges(new AssignStoragePoolChanges());
@@ -45,6 +60,18 @@ public class AppTest {
                 "    }\n" +
                 "}";
         AssignStoragePoolsRequest test2 = mapper.readValue(test, AssignStoragePoolsRequest.class);
+
+    }
+
+    @Test
+    @Ignore
+    public void getViprProjectsTest() {
+        String json = controller.getViprProjects();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(json);
+        String prettyJsonString = gson.toJson(je);
+        System.out.println(prettyJsonString);
 
     }
 }

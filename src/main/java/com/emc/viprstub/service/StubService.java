@@ -47,4 +47,10 @@ public interface StubService {
     ViprTask deleteBlockVolume(String blockVolumeId);
 
     String getInitiatorsByHostId(String id);
+
+    ViprProject getViprProjectById(String id);
+
+    BlockVolume getBlockVolumeById(String id);
+
+    Host getHostById(String id);
 }

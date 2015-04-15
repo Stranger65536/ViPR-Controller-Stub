@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vladimir Belov-Fedorov
@@ -42,18 +43,24 @@ public class DogeController {
     }
 
     @RequestMapping(value = "/block/volumes.json", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public @ResponseBody CreateBlockVolumeResponse createBlockVolume(@RequestBody CreateBlockVolumeRequest request) {
         return stubService.createBlockVolume(request);
     }
 
-    @RequestMapping(value = "/{taskId}.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/tasks/{taskId}.json", method = RequestMethod.GET)
     public @ResponseBody ViprTask updateTask(@PathVariable("taskId") String taskId) {
         return stubService.updateTask(taskId);
     }
 
     @RequestMapping(value = "/block/volumes/bulk.json", method = RequestMethod.GET)
-    public @ResponseBody List<BlockVolume> getBlockVolumes() {
-        return stubService.getBlockVolumes();
+    public @ResponseBody String getBlockVolumes() {
+        return new JSONObject().put("id", stubService.getBlockVolumes().stream().map(BlockVolume::getId).collect(Collectors.toList())).toString();
+    }
+
+    @RequestMapping(value = "/block/volumes/{id}.json", method = RequestMethod.GET)
+    public @ResponseBody BlockVolume getBlockVolumeById(@PathVariable("id") String id) {
+        return stubService.getBlockVolumeById(id);
     }
 
     @RequestMapping(value = "/block/volumes/{id}/deactivate.json", method = RequestMethod.POST)
@@ -76,19 +83,32 @@ public class DogeController {
         return stubService.getInitiator(id);
     }
 
-    @RequestMapping(value = "/block/volumes/exports/bulk.json", method = RequestMethod.POST)
-    public @ResponseBody List<ITL> getExportsByVolume(@RequestBody String volumeId) {
-        return stubService.getExportsByVolume(volumeId);
+    @RequestMapping(value = "/block/volumes/exports/bulk.json", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody String getExportsByVolume(@RequestBody GetExportsByVolumeRequest request) {
+        return new JSONObject().put("itl", stubService.getExportsByVolume(request.getVolumeIds().get(0))).toString();
     }
 
     @RequestMapping(value = "/projects/bulk.json", method = RequestMethod.GET)
-    public @ResponseBody List<ViprProject> getViprProjects() {
-        return stubService.getViprProjects();
+    public @ResponseBody String getViprProjects() {
+
+        return new JSONObject().put("id", stubService.getViprProjects().stream().map(ViprProject::getId).collect(Collectors.toList())).toString();
     }
 
+    @RequestMapping(value = "/projects/{id}.json", method = RequestMethod.GET)
+    public @ResponseBody ViprProject getViprProject(@PathVariable("id") String id) {
+        return stubService.getViprProjectById(id);
+    }
+
+
+
     @RequestMapping(value = "/compute/hosts/bulk.json", method = RequestMethod.GET)
-    public @ResponseBody List<Host> getHosts() {
-        return stubService.getHosts();
+    public @ResponseBody String getHosts() {
+        return new JSONObject().put("id", stubService.getHosts().stream().map(Host::getId).collect(Collectors.toList())).toString();
+    }
+
+    @RequestMapping(value = "/compute/hosts/{id}.json", method = RequestMethod.GET)
+    public @ResponseBody Host getHostById(@PathVariable("id") String id) {
+        return stubService.getHostById(id);
     }
 
     @RequestMapping(value = "/vdc/varrays.json", method = RequestMethod.GET)
