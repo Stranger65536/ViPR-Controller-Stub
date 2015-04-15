@@ -28,6 +28,59 @@ public class DogeController {
     @Autowired
     private StubService stubService;
 
+    private final String doge = "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNhsooydNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNms++oshyhNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNmo++++ossyhNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNdydNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNdo+o+oossyyydNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNs/+smNNNNNNNNNNNNNNNNNNNNNNNNNNNNNdooo+osyyyyyyymNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNy:/+oymNNNNNNNNNNNNNNNNNNNNNNNNNNd++ysosyyhhhhyyhmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNm::+ooshmNNNNNNNNNNNNNNNNNNNNNNNdooshssshddmmdhyydNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNN/:/oososhmNNNNNNNNNNNNNNmmdddhhooshyssyhdmNmmyssyNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNs:/+ossooosydmddhhyssoo++++/+ossshhyooosdmNmmyooomNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNd:/++++///////+//////://::////+oyhhysssymNNmds+oomNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNN++o//::::////+//////////////////+osyssdNNmdysoshdmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNs/::::::///+++++///////////////////+oshhmdyssoysosydNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNd:::::::://+o++//++///////////////////++oooooooyyys+smNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNms------::/++o+//////////+/++////////::::::/++ooyhhyo/+dNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNdo::------:/+oo++//:::::://+o+++//////:::::::://+oyhhy+/+mNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNms::::------://o+++/:-:::-::///+++++/////::/:::::///+oyso+/sNNNNNNNmhdNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNh:--:::-:---::/+o+++:---::::://////+/////::///:::://///+o++/+NNNNNNm.``sNNNNNms+smNNNNNNmdmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNy---:::::/::-://+++//::::::+yhhhysoo+///:::::://::::://///+//sNNNNNNh   /NNNNm/   oNNNNNd-.-hNNNNNNmdhyyhhmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNh----:sdmmhs:://:///::/:://sdsydNNNmho+//::::::::::::::://////sNNNNNNh   /NNNN+    -NNNNm-  `hNNNNdo-.`  ``.:yNNNNNms+omNNNNNNmdmNNNNNNNNNNNNN\n" +
+            "NNNNNNNm/----/yhdNhm+/:::::::://+sdNs/mNMNNmh/:::--------------:::::///hNNNNNd   /NNNs     .NNNNo   sNNNm+`  `.::-`  `oNNNNh   oNNNNNh-.-dNNNNNmysymNN\n" +
+            "NNNNNNNy.....//mmNNd+::::::-::/oshNNhsmNNNmy/::---.----:----------:::///mNNNNm   /NNy` `/   mNNh   /mNNm:   :hmmNmd/   hNNNy   /NNNNd`   +NNNNNo   hNN\n" +
+            "NNNNNNNo.`...:oymmy+::::----:::+ooyddhyhys/:::::---..------------::::///yNNNNN`  :Nh` `sd   mNm.  -mNNN+   +mNNNNNNm   +NNNh   +NNNd.    -NNNNh`  -mNN\n" +
+            "NNNNNNN/.`..--:+++::::------:::/++////////:/:::---........-------::://+/+NNNNN.  :h` `yNm   hm/  `dNNNm`  .mNNNNNNNN`  /NNNd   +NNm:  `  .NNNm-  `dNNN\n" +
+            "NNNNNNN+....-:::-------------:::///:::/:://:::-------..-------::::::/+++/dNNNN/  .. `yNNN`  yo  `yNNNNd   /NNNNNNNNd   oNNNm   /Nm/  -s   NNN+   yNNNN\n" +
+            "NNNNNNNs.....--------:::------::::::------------------------::::::://++++hNNNNs    `yNNNN-  :`  sNNNNNm`  .mNNNNNNm:  .mNNNN`  :m/  :md   mNy   oNNNNN\n" +
+            "NNNNNNNm.......-/++ooo+/:--------:::-------..-..---------:::::::::://++++sNNNNm.  .yNNNNNo     oNNNNNNNs   -ydddds-  `hNNNNN.  :+  :mNm   hd.  /mNNNNN\n" +
+            "NNNNNNNN-....:ohddddmNmmh/-...-----:------...--...------::::::::::://+++++mNNNNdosdNNNNNNm:``.yNNNNNNNNNs.   `..`  `:dNNNNNN/  `  :mNNN`  s-  -mNNNNNN\n" +
+            "NNNNNNNN/...:mNNNNNMMMNNNy:-..----:::---------------:::::::::--::::::/++++hNNNNNNNNNNNNNNNmhhmNNNNNNNNNNNms/.....-+hmNNNNNNNh    :mNNNN:  .  .dNNNNNNN\n" +
+            "NNNNNNNN+..`:mNNNNNMMMMMNh/:-::-:-:::------------::::::::::-------::/+++++sNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNmmddmNNNNNNNNNNNN/`.+mNNNNNy    -dNNNNNNNN\n" +
+            "NNNNNNNNo....omNNNNNNNNNmy+//:-::::::::---::::::::::-:::::------::://+++++oNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNmddNNNNNNNNs::omNNNNNNNNN\n" +
+            "NNNNNNNNs...-/dNNNNNNNNmdyo//+/////://///:::::::::::::::----::::::///+++++oNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNh-..-/sdmNNNNNNmdhyo+////////+os+//::::::::::::::::::::::///+++++/yNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNm-..-/shdmmmmmmmmmhyo+////oyhdmho/:::::::::::::::-::::::////++++++mNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNN+..--/shmNNNNNNNNNmdhhshdmmmhyo/::::::::::::::----:::://///+++++hNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNh..----sdmmNNNNNNNNNNNNdhhyso+/:::::::://::::-----::::://///+++yNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNN/....--+sydmmmddhyyyhyooo+//::::/:////::::::--::::::::/:////+hNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNd-...----:+syyssso+/++////::://///////:::-----::::::://////odNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNy-....---::/++/:/::::/:////////////:::-----::::/::::::::+ymNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNy-..----------:::::::/::://////////::::::::::/::::::/+ymNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNh:---------:-:::::::///:://////////::://::///::::/ohmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNmo--------:-::::::::://///////////////+///:///shmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNdo:------:::::::::::///////////////++/++shdNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNmyo/::-::::::::::://///////////+oyhdmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNmhyso++/:::://////++osyyhdmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNmmmmmmmmNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n" +
+            "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN";
+
+
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public ResponseEntity<String> ping() {
+        return new ResponseEntity<>(doge, HttpStatus.OK);
+    }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public ResponseEntity<String> login() {
@@ -36,9 +89,9 @@ public class DogeController {
         return new ResponseEntity<>(new JSONObject().put("login", "ok").toString(), headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/doge", method = RequestMethod.GET)
     public String test() {
-        return new JSONObject().put("тест", "хуетест").toString();
+        return doge;
     }
 
     @RequestMapping(value = "/block/volumes.json", method = RequestMethod.POST)
