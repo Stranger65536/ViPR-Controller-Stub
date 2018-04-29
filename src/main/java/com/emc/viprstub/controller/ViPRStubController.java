@@ -4,6 +4,8 @@
 package com.emc.viprstub.controller;
 
 import com.emc.storageos.model.BulkIdParam;
+import com.emc.storageos.model.pools.StoragePoolBulkRep;
+import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.varray.VirtualArrayList;
 import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,5 +59,15 @@ public class ViPRStubController {
     @PostMapping("/vdc/varrays/bulk")
     public ResponseEntity<VirtualArrayList> getVirtualArraysByIds(@RequestBody final BulkIdParam ids) {
         return new ResponseEntity<>(stubService.getVarrays(ids), HttpStatus.OK);
+    }
+
+    @GetMapping("/vdc/storage-pools")
+    public ResponseEntity<StoragePoolList> getStoragePools() {
+        return new ResponseEntity<>(stubService.getStoragePools(), HttpStatus.OK);
+    }
+
+    @PostMapping("/vdc/storage-pools/bulk")
+    public ResponseEntity<StoragePoolBulkRep> getStoragePoolsByIds(@RequestBody final BulkIdParam ids) {
+        return new ResponseEntity<>(stubService.getStoragePools(ids), HttpStatus.OK);
     }
 }

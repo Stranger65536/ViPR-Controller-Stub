@@ -107,7 +107,8 @@ public class StubIntegrationTest {
         assertThat(vArrays.stream().map(VirtualArrayRestRep::getId)
                         .map(URI::toString)
                         .collect(Collectors.toList()),
-                equalTo(singletonList(propertiesResolver.resolve("urn:storageos:VirtualDataCenter:${vdcid}:vdc1"))));
+                equalTo(singletonList(propertiesResolver.resolve(
+                        "urn:storageos:VirtualDataCenter:${vdcid}:vdc1"))));
     }
 }
 
