@@ -1,4 +1,4 @@
-package com.emc.viprstub;
+package com.emc.viprstub.service;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.varray.VirtualArrayList;

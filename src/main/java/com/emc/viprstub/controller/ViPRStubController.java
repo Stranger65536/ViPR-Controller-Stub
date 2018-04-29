@@ -5,7 +5,7 @@ package com.emc.viprstub.controller;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.varray.VirtualArrayList;
-import com.emc.viprstub.ViPRStubService;
+import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

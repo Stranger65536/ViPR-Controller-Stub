@@ -12,10 +12,12 @@ import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.vipr.client.ClientConfig;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.emc.viprstub.config.ViPRStub;
+import com.emc.viprstub.service.PropertiesResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,6 +35,9 @@ import static org.hamcrest.Matchers.not;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ViPRStub.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class StubIntegrationTest {
+    @Autowired
+    private PropertiesResolver propertiesResolver;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(StubIntegrationTest.class);
 
     private final ViPRCoreClient client;
@@ -102,7 +107,7 @@ public class StubIntegrationTest {
         assertThat(vArrays.stream().map(VirtualArrayRestRep::getId)
                         .map(URI::toString)
                         .collect(Collectors.toList()),
-                equalTo(singletonList("urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1")));
+                equalTo(singletonList(propertiesResolver.resolve("urn:storageos:VirtualDataCenter:${vdcid}:vdc1"))));
     }
 }
 

@@ -15,3 +15,4 @@ server:
     keyAlias: CoprHD
 logging:
   config: config/log4j2.yml
+node: 1

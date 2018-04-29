@@ -1,4 +1,4 @@
-package com.emc.viprstub;
+package com.emc.viprstub.service;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
@@ -15,7 +15,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.stream.Collectors;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 public class ViPRStubServiceImpl implements ViPRStubService {
@@ -24,11 +27,12 @@ public class ViPRStubServiceImpl implements ViPRStubService {
     @Autowired
     public ViPRStubServiceImpl(
             final ResourceLoader resourceLoader,
-            final ObjectMapper objectMapper)
+            final ObjectMapper objectMapper,
+            final PropertiesResolver propertiesResolver)
             throws IOException {
         final ObjectMapper json = configureMapper(objectMapper);
         final Resource varraysResource = resourceLoader.getResource("classpath:data/varrays.json");
-        virtualArrayList = getVirtualArrayList(varraysResource, json);
+        virtualArrayList = getVirtualArrayList(varraysResource, json, propertiesResolver);
     }
 
     @Override
@@ -60,8 +64,11 @@ public class ViPRStubServiceImpl implements ViPRStubService {
 
     private static VirtualArrayList getVirtualArrayList(
             final Resource varraysResource,
-            final ObjectMapper json)
+            final ObjectMapper objectMapper,
+            final PropertiesResolver propertiesResolver)
             throws IOException {
-        return json.readValue(varraysResource.getFile(), VirtualArrayList.class);
+        final byte[] content = Files.readAllBytes(varraysResource.getFile().toPath());
+        final String json = propertiesResolver.resolve(new String(content, UTF_8));
+        return objectMapper.readValue(json, VirtualArrayList.class);
     }
 }
