@@ -1,0 +1,17 @@
+banner:
+  charset: UTF-8
+  location: file:config/banner.txt
+server:
+  port: 4443
+  tomcat.uri-encoding: UTF-8
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+  ssl:
+    key-store: config/keystore.p12
+    key-store-password: password
+    keyStoreType: PKCS12
+    keyAlias: CoprHD
+logging:
+  config: config/log4j2.yml

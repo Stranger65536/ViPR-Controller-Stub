@@ -1,7 +1,5 @@
 .idea/
-**.iml
-target/
+*.iml
 build/
-classes/
 .gradle/
-gradle.properties
+logs/
