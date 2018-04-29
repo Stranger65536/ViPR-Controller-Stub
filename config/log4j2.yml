@@ -37,9 +37,9 @@ Configutation:
         - name: org.apache
           additivity: false
           level: off
-        - name: com.emc.vipr.client
-          additivity: false
-          level: off
+#        - name: com.emc.vipr.client
+#          additivity: false
+#          level: off
         - name: org.springframework
           additivity: false
           level: warn
