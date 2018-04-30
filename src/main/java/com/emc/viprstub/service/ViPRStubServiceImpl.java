@@ -22,6 +22,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,6 +84,12 @@ public class ViPRStubServiceImpl implements ViPRStubService {
     public StoragePoolBulkRep getStoragePools(final BulkIdParam ids) {
         return new StoragePoolBulkRep(storagePoolList.stream()
                 .filter(sp -> ids.getIds().contains(sp.getId())).collect(Collectors.toList()));
+    }
+
+    @Override
+    public StoragePoolRestRep getStoragePool(final String id) throws URISyntaxException {
+        final URI uri = new URI(id);
+        return storagePoolList.stream().filter(sp -> sp.getId().equals(uri)).findFirst().orElse(null);
     }
 
     @SuppressWarnings({"AnonymousInnerClassMayBeStatic", "AnonymousInnerClass"})

@@ -6,6 +6,7 @@ package com.emc.viprstub.controller;
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.pools.StoragePoolBulkRep;
 import com.emc.storageos.model.pools.StoragePoolList;
+import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.varray.VirtualArrayList;
 import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,10 +17,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URISyntaxException;
 
 import static java.util.Collections.singletonMap;
 
@@ -64,6 +68,12 @@ public class ViPRStubController {
     @GetMapping("/vdc/storage-pools")
     public ResponseEntity<StoragePoolList> getStoragePools() {
         return new ResponseEntity<>(stubService.getStoragePools(), HttpStatus.OK);
+    }
+
+    @GetMapping("/vdc/storage-pools/{id}")
+    public ResponseEntity<StoragePoolRestRep> getStoragePoolById(@PathVariable("id") final String id)
+            throws URISyntaxException {
+        return new ResponseEntity<>(stubService.getStoragePool(id), HttpStatus.OK);
     }
 
     @PostMapping("/vdc/storage-pools/bulk")

@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,9 +82,10 @@ public class StubIntegrationTest {
     }
 
     @Test
-    public void testGetStoragePoolById() {
-        final URI poolUri = null;
+    public void testGetStoragePoolById() throws URISyntaxException {
+        final URI poolUri = new URI(propertiesResolver.resolve("urn:storageos:StoragePool:${spid1}:vdc1"));
         final StoragePoolRestRep pool = client.storagePools().get(poolUri);
+        assertThat(pool.getName(), equalTo("CLARIION+FNM00104900081+POOL+U+Pool RAID10 (1)"));
     }
 
     @Test
