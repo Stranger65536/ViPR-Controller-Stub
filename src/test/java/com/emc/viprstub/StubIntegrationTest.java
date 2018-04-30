@@ -24,7 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -39,12 +41,10 @@ import static org.hamcrest.Matchers.not;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ViPRStub.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class StubIntegrationTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StubIntegrationTest.class);
+    private final ViPRCoreClient client;
     @Autowired
     private PropertiesResolver propertiesResolver;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StubIntegrationTest.class);
-
-    private final ViPRCoreClient client;
 
     public StubIntegrationTest() {
         client = new ViPRCoreClient(new ClientConfig()
@@ -105,8 +105,13 @@ public class StubIntegrationTest {
 
     @Test
     public void testCreateVirtualPool() {
-        final BlockVirtualPoolParam param = null;
+        final BlockVirtualPoolParam param = prepareVirtualPoolParams("test");
         final URI poolId = client.blockVpools().create(param).getId();
+        final List<BlockVirtualPoolRestRep> pools = client.blockVpools().getAll();
+        assertThat(pools.stream().map(BlockVirtualPoolRestRep::getId)
+                        .map(URI::toString)
+                        .collect(Collectors.toList()),
+                equalTo(singletonList(poolId.toString())));
     }
 
     @Test
@@ -124,6 +129,26 @@ public class StubIntegrationTest {
                         .collect(Collectors.toList()),
                 equalTo(singletonList(propertiesResolver.resolve(
                         "urn:storageos:VirtualDataCenter:${vdcid}:vdc1"))));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private BlockVirtualPoolParam prepareVirtualPoolParams(final String name) {
+        final BlockVirtualPoolParam poolParam = new BlockVirtualPoolParam();
+
+        poolParam.setName(name);
+        poolParam.setDescription("Created using CoprHD Smart Pool Manager");
+        poolParam.setProvisionType("Thin");
+        poolParam.setDriveType("SAS");
+        poolParam.setMaxPaths(1);
+        poolParam.setProtocols(new HashSet<>(singletonList("iSCSI")));
+        poolParam.setUseMatchedPools(false);
+        poolParam.setVarrays(getVArrays());
+
+        return poolParam;
+    }
+
+    private Set<String> getVArrays() {
+        return client.varrays().getAll().stream().map(i -> i.getId().toString()).collect(Collectors.toSet());
     }
 }
 

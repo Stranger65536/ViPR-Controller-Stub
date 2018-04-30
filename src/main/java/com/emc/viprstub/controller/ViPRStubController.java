@@ -9,6 +9,9 @@ import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.varray.VirtualArrayList;
+import com.emc.storageos.model.vpool.BlockVirtualPoolBulkRep;
+import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
+import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.emc.storageos.model.vpool.VirtualPoolList;
 import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import static java.util.Collections.singletonMap;
@@ -92,5 +96,16 @@ public class ViPRStubController {
     @GetMapping("/block/vpools")
     public ResponseEntity<VirtualPoolList> getVirtualPools() {
         return new ResponseEntity<>(stubService.getVirtualPools(), HttpStatus.OK);
+    }
+
+    @PostMapping("/block/vpools")
+    public ResponseEntity<BlockVirtualPoolRestRep> createVirtualPool(
+            @RequestBody final BlockVirtualPoolParam param) throws IOException {
+        return new ResponseEntity<>(stubService.createVirtualPool(param), HttpStatus.OK);
+    }
+
+    @PostMapping("/block/vpools/bulk")
+    public ResponseEntity<BlockVirtualPoolBulkRep> getVirtualPoolsByIds(@RequestBody final BulkIdParam ids) {
+        return new ResponseEntity<>(stubService.getVirtualPools(ids), HttpStatus.OK);
     }
 }

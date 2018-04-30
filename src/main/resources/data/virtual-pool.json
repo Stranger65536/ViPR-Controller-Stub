@@ -1,0 +1,66 @@
+{
+  "name": "yep",
+  "id": "urn:storageos:VirtualPool:vpid:vdc1",
+  "link": {
+    "rel": "self",
+    "href": "/block/vpools/urn:storageos:VirtualPool:vpid:vdc1"
+  },
+  "creation_time": 1463933926820,
+  "inactive": false,
+  "global": false,
+  "remote": false,
+  "vdc": {
+    "id": "urn:storageos:VirtualDataCenter:${vdcid1}:vdc1",
+    "link": {
+      "rel": "self",
+      "href": "/vdc/urn:storageos:VirtualDataCenter:${vdcid1}:vdc1"
+    }
+  },
+  "tag": [],
+  "internal": false,
+  "type": "block",
+  "description": "Created using CoprHD Smart Pool Manager",
+  "protocol": [
+    "iSCSI"
+  ],
+  "provisioning_type": "Thin",
+  "num_resources": 0,
+  "system_type": null,
+  "use_matched_pools": false,
+  "auto_tiering_policy_name": null,
+  "drive_type": "SAS",
+  "expandable": false,
+  "fast_expansion": false,
+  "multi_volume_consistency": false,
+  "thin_volume_preallocation_percentage": null,
+  "block_protection": {
+    "snapshots": {
+      "max_native_snapshots": 0
+    },
+    "continuous_copies": {
+      "max_native_continuous_copies": 0,
+      "protection_mirror_vpool": null,
+      "ha_max_native_continuous_copies": null,
+      "ha_protection_mirror_vpool": null
+    },
+    "recoverpoint": null,
+    "block_protection": null
+  },
+  "high_availability": null,
+  "raid_level": [],
+  "unique_auto_tier_policy_names": false,
+  "min_paths": 1,
+  "paths_per_initiator": 1,
+  "host_io_limit_bandwidth": null,
+  "host_io_limit_iops": null,
+  "varray": [
+    {
+      "id": "urn:storageos:VirtualArray:${vdcid1}:vdc1",
+      "link": {
+        "rel": "self",
+        "href": "/vdc/varrays/urn:storageos:VirtualArray:${vdcid1}:vdc1"
+      }
+    }
+  ],
+  "num_paths": 1
+}
