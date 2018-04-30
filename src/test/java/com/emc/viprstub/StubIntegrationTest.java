@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -69,6 +70,14 @@ public class StubIntegrationTest {
     @Test
     public void testGetAllStoragePools() {
         final List<StoragePoolRestRep> pools = client.storagePools().getAll();
+        assertThat(pools.stream().map(StoragePoolRestRep::getId)
+                        .map(URI::toString)
+                        .collect(Collectors.toList()),
+                equalTo(asList(propertiesResolver.resolve("urn:storageos:StoragePool:${spid1}:vdc1"),
+                        propertiesResolver.resolve("urn:storageos:StoragePool:${spid2}:vdc1"),
+                        propertiesResolver.resolve("urn:storageos:StoragePool:${spid3}:vdc1"),
+                        propertiesResolver.resolve("urn:storageos:StoragePool:${spid4}:vdc1"))));
+
     }
 
     @Test

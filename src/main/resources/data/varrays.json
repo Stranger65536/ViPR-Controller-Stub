@@ -1,12 +1,10 @@
-{
-  "varray": [
-    {
-      "id": "urn:storageos:VirtualDataCenter:${vdcid}:vdc1",
-      "name": "vdc1",
-      "link": {
-        "rel": "self",
-        "href": "/vdc/storage-systems/urn:storageos:VirtualDataCenter:${vdcid}:vdc1"
-      }
+[
+  {
+    "id": "urn:storageos:VirtualDataCenter:${vdcid}:vdc1",
+    "name": "vdc1",
+    "link": {
+      "rel": "self",
+      "href": "/vdc/storage-systems/urn:storageos:VirtualDataCenter:${vdcid}:vdc1"
     }
-  ]
-}
+  }
+]

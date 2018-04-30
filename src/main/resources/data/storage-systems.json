@@ -1,0 +1,83 @@
+[
+  {
+    "name": "CLARIION+FNM00104900081",
+    "id": "urn:storageos:StorageSystem:${ssid1}:vdc1",
+    "link": {
+      "rel": "self",
+      "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1"
+    },
+    "creation_time": 1460121139768,
+    "inactive": false,
+    "global": false,
+    "remote": false,
+    "vdc": {
+      "id": "urn:storageos:VirtualDataCenter:${vdcid1}:vdc1",
+      "link": {
+        "rel": "self",
+        "href": "/vdc/urn:storageos:VirtualDataCenter:${vdcid1}:vdc1"
+      }
+    },
+    "tag": [],
+    "internal": false,
+    "native_guid": "CLARIION+FNM00104900081",
+    "system_type": "vnxblock",
+    "discovery_job_status": "COMPLETE",
+    "metering_job_status": "COMPLETE",
+    "last_discovery_status_message": "Unknown Status",
+    "last_discovery_run_time": 1463935611359,
+    "next_discovery_run_time": 1463939209427,
+    "last_metering_run_time": 1463935584599,
+    "next_metering_run_time": 1463939179444,
+    "success_discovery_time": 1463935611359,
+    "success_metering_time": 1463935584599,
+    "compatibility_status": "COMPATIBLE",
+    "registration_status": "REGISTERED",
+    "serial_number": "FNM00104900081",
+    "major_version": null,
+    "minor_version": null,
+    "ip_address": null,
+    "secondary_ip": [],
+    "port_number": null,
+    "smis_provider_ip": "10.76.249.41",
+    "smis_port_number": 5988,
+    "smis_user_name": "admin",
+    "smis_connection_status": null,
+    "smis_use_ssl": false,
+    "export_mask": [],
+    "protocol": [],
+    "reachable": true,
+    "firmware_version": "05.33.000.3.644",
+    "active_provider_uri": {
+      "id": "urn:storageos:StorageProvider:${sprovid1}:vdc1",
+      "link": {
+        "rel": "self",
+        "href": "/vdc/smis-providers/urn:storageos:StorageProvider:${sprovid1}:vdc1"
+      }
+    },
+    "smis_provider": [
+      {
+        "id": "urn:storageos:StorageProvider:${sprovid1}:vdc1",
+        "link": {
+          "rel": "self",
+          "href": "/vdc/smis-providers/urn:storageos:StorageProvider:${sprovid1}:vdc1"
+        }
+      }
+    ],
+    "username": null,
+    "model": "Rack Mounted VNX5500",
+    "associated_system": [],
+    "supported_provisioning_type": "THIN_AND_THICK",
+    "async_action": [
+      "CreateElementReplica",
+      "CreateGroupReplica"
+    ],
+    "max_resources": -1,
+    "num_resources": 0,
+    "supported_replication_type": [],
+    "connected_system": [],
+    "average_port_metrics": 1.5000773327211252,
+    "supportsSoftLimit": false,
+    "supportsNotificationLimit": false,
+    "hasSRDFRAGroups": null
+  }
+]

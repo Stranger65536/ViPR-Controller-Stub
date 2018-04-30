@@ -39,6 +39,13 @@
  */
 package com.sun.jersey.api.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.sun.jersey.core.header.InBoundHeaders;
 import com.sun.jersey.core.provider.CompletableReader;
 import com.sun.jersey.core.util.ReaderWriter;
@@ -54,11 +61,13 @@ import javax.ws.rs.core.Response.StatusType;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.RuntimeDelegate;
 import javax.ws.rs.ext.RuntimeDelegate.HeaderDelegate;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -72,6 +81,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * A client (in-bound) HTTP response.
@@ -482,9 +492,19 @@ public class ClientResponse {
         }
 
         try {
-            T t = br.readFrom(c, type, EMPTY_ANNOTATIONS, mediaType, headers, entity);
+            final String body = new BufferedReader(new InputStreamReader(entity))
+                    .lines().collect(Collectors.joining("\n"));
+            final ObjectMapper objectMapper = new ObjectMapper();
+            final AnnotationIntrospector aiJaxb = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
+            final AnnotationIntrospector aiJackson = new JacksonAnnotationIntrospector();
+            objectMapper.setAnnotationIntrospector(AnnotationIntrospector.pair(aiJaxb, aiJackson));
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            T t = objectMapper.readValue(body, c);
             if (br instanceof CompletableReader) {
                 t = ((CompletableReader<T>) br).complete(t);
+                throw new IOException("");
+
             }
             if (!(t instanceof Closeable)) {
                 close();
