@@ -8,6 +8,9 @@ import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.varray.VirtualArrayList;
 import com.emc.storageos.model.varray.VirtualArrayRestRep;
+import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
+import com.emc.storageos.model.vpool.NamedRelatedVirtualPoolRep;
+import com.emc.storageos.model.vpool.VirtualPoolList;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
@@ -25,6 +28,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +40,7 @@ public class ViPRStubServiceImpl implements ViPRStubService {
     private final List<VirtualArrayRestRep> virtualArrayList;
     private final List<StoragePoolRestRep> storagePoolList;
     private final List<StorageSystemRestRep> storageSystemList;
+    private final List<BlockVirtualPoolRestRep> virtualPools;
 
     @Autowired
     public ViPRStubServiceImpl(
@@ -44,6 +49,7 @@ public class ViPRStubServiceImpl implements ViPRStubService {
             final PropertiesResolver propertiesResolver)
             throws IOException {
         this.objectMapper = configureMapper(objectMapper);
+        this.virtualPools = new ArrayList<>(10);
         final Resource varraysResource = resourceLoader.getResource("classpath:data/varrays.json");
         virtualArrayList = getVirtualArrayList(varraysResource, objectMapper, propertiesResolver);
         final Resource storagePoolsResource = resourceLoader.getResource("classpath:data/storage-pools.json");
@@ -92,6 +98,12 @@ public class ViPRStubServiceImpl implements ViPRStubService {
         return storagePoolList.stream().filter(sp -> sp.getId().equals(uri)).findFirst().orElse(null);
     }
 
+    @Override
+    public StorageSystemRestRep getStorageSystem(final String id) throws URISyntaxException {
+        final URI uri = new URI(id);
+        return storageSystemList.stream().filter(sp -> sp.getId().equals(uri)).findFirst().orElse(null);
+    }
+
     @SuppressWarnings({"AnonymousInnerClassMayBeStatic", "AnonymousInnerClass"})
     private static List<StorageSystemRestRep> getStorageSystemList(
             final Resource storageSystemsResource,
@@ -134,5 +146,12 @@ public class ViPRStubServiceImpl implements ViPRStubService {
         final String json = propertiesResolver.resolve(new String(content, UTF_8));
         return objectMapper.readValue(json, new TypeReference<List<VirtualArrayRestRep>>() {
         });
+    }
+
+    @Override
+    public VirtualPoolList getVirtualPools() {
+        return new VirtualPoolList(virtualPools.stream()
+                .map(sp -> new NamedRelatedVirtualPoolRep(sp.getId(), sp.getLink(), sp.getName(), sp.getType()))
+                .collect(Collectors.toList()));
     }
 }

@@ -7,7 +7,9 @@ import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.pools.StoragePoolBulkRep;
 import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
+import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.varray.VirtualArrayList;
+import com.emc.storageos.model.vpool.VirtualPoolList;
 import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +67,12 @@ public class ViPRStubController {
         return new ResponseEntity<>(stubService.getVarrays(ids), HttpStatus.OK);
     }
 
+    @GetMapping("/vdc/storage-systems/{id}")
+    public ResponseEntity<StorageSystemRestRep> getStorageSystemById(@PathVariable("id") final String id)
+            throws URISyntaxException {
+        return new ResponseEntity<>(stubService.getStorageSystem(id), HttpStatus.OK);
+    }
+
     @GetMapping("/vdc/storage-pools")
     public ResponseEntity<StoragePoolList> getStoragePools() {
         return new ResponseEntity<>(stubService.getStoragePools(), HttpStatus.OK);
@@ -79,5 +87,10 @@ public class ViPRStubController {
     @PostMapping("/vdc/storage-pools/bulk")
     public ResponseEntity<StoragePoolBulkRep> getStoragePoolsByIds(@RequestBody final BulkIdParam ids) {
         return new ResponseEntity<>(stubService.getStoragePools(ids), HttpStatus.OK);
+    }
+
+    @GetMapping("/block/vpools")
+    public ResponseEntity<VirtualPoolList> getVirtualPools() {
+        return new ResponseEntity<>(stubService.getVirtualPools(), HttpStatus.OK);
     }
 }

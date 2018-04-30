@@ -29,7 +29,9 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
@@ -89,14 +91,16 @@ public class StubIntegrationTest {
     }
 
     @Test
-    public void testGetStorageSystemById() {
-        final URI systemUri = null;
-        final StorageSystemRestRep systemRestRep = client.storageSystems().get(systemUri);
+    public void testGetStorageSystemById() throws URISyntaxException {
+        final URI systemUri = new URI(propertiesResolver.resolve("urn:storageos:StorageSystem:${ssid1}:vdc1"));
+        final StorageSystemRestRep system = client.storageSystems().get(systemUri);
+        assertThat(system.getName(), equalTo("CLARIION+FNM00104900081"));
     }
 
     @Test
     public void testGetAllVirtualPools() {
         final List<BlockVirtualPoolRestRep> pools = client.blockVpools().getAll();
+        assertThat(pools, is(empty()));
     }
 
     @Test

@@ -4,7 +4,9 @@ import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.pools.StoragePoolBulkRep;
 import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
+import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.varray.VirtualArrayList;
+import com.emc.storageos.model.vpool.VirtualPoolList;
 
 import java.net.URISyntaxException;
 
@@ -18,4 +20,8 @@ public interface ViPRStubService {
     StoragePoolBulkRep getStoragePools(BulkIdParam ids);
 
     StoragePoolRestRep getStoragePool(String id) throws URISyntaxException;
+
+    StorageSystemRestRep getStorageSystem(String id) throws URISyntaxException;
+
+    VirtualPoolList getVirtualPools();
 }
