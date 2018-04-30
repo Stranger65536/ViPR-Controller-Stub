@@ -2,6 +2,7 @@ package com.emc.viprstub.service;
 
 import com.emc.storageos.model.BulkIdParam;
 import com.emc.storageos.model.NamedRelatedResourceRep;
+import com.emc.storageos.model.RelatedResourceRep;
 import com.emc.storageos.model.pools.StoragePoolBulkRep;
 import com.emc.storageos.model.pools.StoragePoolList;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
@@ -13,6 +14,7 @@ import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.emc.storageos.model.vpool.NamedRelatedVirtualPoolRep;
 import com.emc.storageos.model.vpool.VirtualPoolList;
+import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
@@ -127,7 +129,7 @@ public class ViPRStubServiceImpl implements ViPRStubService {
     @Override
     public BlockVirtualPoolRestRep createVirtualPool(final BlockVirtualPoolParam param) throws IOException {
         if (virtualPools.stream().anyMatch(vp -> vp.getName().equals(param.getName()))) {
-            throw new RestClientException("Duplicate virtual pool name!");
+            throw new RestClientException("Duplicate virtual pool name " + param.getName());
         }
         final String id = UUID.randomUUID().toString();
         final String poolString = VPID.matcher(virtualPoolTemplate).replaceAll(id);
@@ -142,6 +144,35 @@ public class ViPRStubServiceImpl implements ViPRStubService {
     public BlockVirtualPoolBulkRep getVirtualPools(final BulkIdParam ids) {
         return new BlockVirtualPoolBulkRep(virtualPools.stream()
                 .filter(sp -> ids.getIds().contains(sp.getId())).collect(Collectors.toList()));
+    }
+
+    @Override
+    public BlockVirtualPoolRestRep assignPools(
+            final String poolId,
+            final VirtualPoolPoolUpdateParam param)
+            throws URISyntaxException {
+        final URI poolURI = new URI(poolId);
+        final BlockVirtualPoolRestRep virtualPool = virtualPools.stream()
+                .filter(sp -> sp.getId().equals(poolURI))
+                .findFirst().orElseThrow(() -> new RestClientException("No such pool exists " + poolId));
+        final List<StoragePoolRestRep> pools = param.getStoragePoolAssignmentChanges().getAdd().getStoragePools()
+                .stream()
+                .map(id -> {
+                    final StoragePoolRestRep poolRestRep;
+                    try {
+                        poolRestRep = getStoragePool(id);
+                    } catch (Exception e) {
+                        throw new RestClientException("Invalid id " + id, e);
+                    }
+                    if (poolRestRep == null) {
+                        throw new RestClientException("No such pool with id " + id);
+                    }
+                    return poolRestRep;
+                }).collect(Collectors.toList());
+        pools.forEach(pool -> virtualPool.getAssignedStoragePools().add(
+                new RelatedResourceRep(pool.getLink().getLinkRef(), pool.getLink())));
+
+        return virtualPool;
     }
 
     @SuppressWarnings({"AnonymousInnerClassMayBeStatic", "AnonymousInnerClass"})

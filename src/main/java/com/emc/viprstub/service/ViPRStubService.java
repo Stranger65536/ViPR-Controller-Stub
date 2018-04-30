@@ -10,6 +10,7 @@ import com.emc.storageos.model.vpool.BlockVirtualPoolBulkRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.emc.storageos.model.vpool.VirtualPoolList;
+import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -32,4 +33,6 @@ public interface ViPRStubService {
     BlockVirtualPoolRestRep createVirtualPool(BlockVirtualPoolParam param) throws IOException;
 
     BlockVirtualPoolBulkRep getVirtualPools(BulkIdParam ids);
+
+    BlockVirtualPoolRestRep assignPools(final String poolId, VirtualPoolPoolUpdateParam param) throws URISyntaxException;
 }

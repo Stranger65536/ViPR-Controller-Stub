@@ -3,11 +3,14 @@
  */
 package com.emc.viprstub;
 
+import com.emc.storageos.model.RelatedResourceRep;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.varray.VirtualArrayRestRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
+import com.emc.storageos.model.vpool.StoragePoolAssignmentChanges;
+import com.emc.storageos.model.vpool.StoragePoolAssignments;
 import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.vipr.client.ClientConfig;
 import com.emc.vipr.client.ViPRCoreClient;
@@ -24,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,10 +119,18 @@ public class StubIntegrationTest {
     }
 
     @Test
-    public void testAssignStoragePoolsToVPool() {
-        final URI poolId = null;
-        final VirtualPoolPoolUpdateParam param = null;
-        client.blockVpools().assignStoragePools(poolId, param);
+    public void testAssignStoragePoolsToVPool() throws URISyntaxException {
+        final BlockVirtualPoolParam param = prepareVirtualPoolParams("test");
+        final URI poolId = client.blockVpools().create(param).getId();
+        final List<URI> spIds = singletonList(new URI(propertiesResolver.resolve(
+                "urn:storageos:StoragePool:${spid1}:vdc1")));
+        final VirtualPoolPoolUpdateParam updateParam = prepareAssignParams(spIds);
+        final BlockVirtualPoolRestRep updated = client.blockVpools().assignStoragePools(poolId, updateParam);
+        assertThat(updated.getAssignedStoragePools().stream()
+                .map(RelatedResourceRep::getId).map(URI::toString).collect(Collectors.toList()), equalTo(
+                singletonList(new URI(propertiesResolver.resolve(
+                        "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:" +
+                                "vdc1/storage-pools/urn:storageos:StoragePool:${spid1}:vdc1")).toString())));
     }
 
     @Test
@@ -149,6 +161,30 @@ public class StubIntegrationTest {
 
     private Set<String> getVArrays() {
         return client.varrays().getAll().stream().map(i -> i.getId().toString()).collect(Collectors.toSet());
+    }
+
+    private static VirtualPoolPoolUpdateParam prepareAssignParams(final Collection<URI> pools) {
+        final StoragePoolAssignments assignments = prepareAssignments(pools);
+        final StoragePoolAssignmentChanges changes = prepareAssignmentChanges(assignments);
+        return prepareUpdateParams(changes);
+    }
+
+    private static StoragePoolAssignments prepareAssignments(final Collection<URI> pools) {
+        final StoragePoolAssignments assignments = new StoragePoolAssignments();
+        assignments.setStoragePools(pools.stream().map(URI::toString).collect(Collectors.toSet()));
+        return assignments;
+    }
+
+    private static StoragePoolAssignmentChanges prepareAssignmentChanges(final StoragePoolAssignments assignments) {
+        final StoragePoolAssignmentChanges changes = new StoragePoolAssignmentChanges();
+        changes.setAdd(assignments);
+        return changes;
+    }
+
+    private static VirtualPoolPoolUpdateParam prepareUpdateParams(final StoragePoolAssignmentChanges changes) {
+        final VirtualPoolPoolUpdateParam updateParam = new VirtualPoolPoolUpdateParam();
+        updateParam.setStoragePoolAssignmentChanges(changes);
+        return updateParam;
     }
 }
 

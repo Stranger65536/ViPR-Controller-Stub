@@ -13,6 +13,7 @@ import com.emc.storageos.model.vpool.BlockVirtualPoolBulkRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.emc.storageos.model.vpool.VirtualPoolList;
+import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.viprstub.service.ViPRStubService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -107,5 +109,12 @@ public class ViPRStubController {
     @PostMapping("/block/vpools/bulk")
     public ResponseEntity<BlockVirtualPoolBulkRep> getVirtualPoolsByIds(@RequestBody final BulkIdParam ids) {
         return new ResponseEntity<>(stubService.getVirtualPools(ids), HttpStatus.OK);
+    }
+
+    @PutMapping("/block/vpools/{id}/assign-matched-pools")
+    public ResponseEntity<BlockVirtualPoolRestRep> getVirtualPoolsByIds(
+            @PathVariable("id") final String pooldId,
+            @RequestBody final VirtualPoolPoolUpdateParam param) throws URISyntaxException {
+        return new ResponseEntity<>(stubService.assignPools(pooldId, param), HttpStatus.OK);
     }
 }
