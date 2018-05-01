@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  ViPRStub:
+    image: com/emc/coprhd/vipr:${VERSION}
+    container_name: virp-node-1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VERSION=${VERSION}

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2015 EMC Corporation
- * All Rights Reserved
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
  */
 package com.emc.storageos.model.vpool;
 

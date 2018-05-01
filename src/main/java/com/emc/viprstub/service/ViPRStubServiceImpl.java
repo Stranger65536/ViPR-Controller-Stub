@@ -1,3 +1,6 @@
+/*
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
+ */
 package com.emc.viprstub.service;
 
 import com.emc.storageos.model.BulkIdParam;
@@ -27,15 +30,15 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,20 +60,15 @@ public class ViPRStubServiceImpl implements ViPRStubService {
 
     @Autowired
     public ViPRStubServiceImpl(
-            final ResourceLoader resourceLoader,
             final ObjectMapper objectMapper,
             final PropertiesResolver propertiesResolver)
             throws IOException {
         this.objectMapper = configureMapper(objectMapper);
         this.virtualPools = new ArrayList<>(10);
-        final Resource varraysResource = resourceLoader.getResource("classpath:data/varrays.json");
-        virtualArrayList = getVirtualArrayList(varraysResource, objectMapper, propertiesResolver);
-        final Resource storagePoolsResource = resourceLoader.getResource("classpath:data/storage-pools.json");
-        storagePoolList = getStoragePoolsList(storagePoolsResource, objectMapper, propertiesResolver);
-        final Resource storageSystemsResource = resourceLoader.getResource("classpath:data/storage-systems.json");
-        storageSystemList = getStorageSystemList(storageSystemsResource, objectMapper, propertiesResolver);
-        final Resource virtualPoolResource = resourceLoader.getResource("classpath:data/virtual-pool.json");
-        virtualPoolTemplate = getVirtualPoolTemplate(virtualPoolResource, propertiesResolver);
+        virtualArrayList = parseVirtualArrays("data/varrays.json", objectMapper, propertiesResolver);
+        storagePoolList = parseStoragePools("data/storage-pools.json", objectMapper, propertiesResolver);
+        storageSystemList = parseStorageSystems("data/storage-systems.json", objectMapper, propertiesResolver);
+        virtualPoolTemplate = getVirtualPoolTemplate("data/virtual-pool.json", propertiesResolver);
     }
 
     @Override
@@ -175,29 +173,6 @@ public class ViPRStubServiceImpl implements ViPRStubService {
         return virtualPool;
     }
 
-    @SuppressWarnings({"AnonymousInnerClassMayBeStatic", "AnonymousInnerClass"})
-    private static List<StorageSystemRestRep> getStorageSystemList(
-            final Resource storageSystemsResource,
-            final ObjectMapper objectMapper,
-            final PropertiesResolver propertiesResolver) throws IOException {
-        final byte[] content = Files.readAllBytes(storageSystemsResource.getFile().toPath());
-        final String json = propertiesResolver.resolve(new String(content, UTF_8));
-        return objectMapper.readValue(json, new TypeReference<List<StorageSystemRestRep>>() {
-        });
-    }
-
-    @SuppressWarnings("AnonymousInnerClass")
-    private static List<StoragePoolRestRep> getStoragePoolsList(
-            final Resource storagePoolsResource,
-            final ObjectMapper objectMapper,
-            final PropertiesResolver propertiesResolver)
-            throws IOException {
-        final byte[] content = Files.readAllBytes(storagePoolsResource.getFile().toPath());
-        final String json = propertiesResolver.resolve(new String(content, UTF_8));
-        return objectMapper.readValue(json, new TypeReference<List<StoragePoolRestRep>>() {
-        });
-    }
-
     private static ObjectMapper configureMapper(final ObjectMapper objectMapper) {
         final AnnotationIntrospector aiJaxb = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
         final AnnotationIntrospector aiJackson = new JacksonAnnotationIntrospector();
@@ -212,23 +187,64 @@ public class ViPRStubServiceImpl implements ViPRStubService {
         return objectMapper;
     }
 
-    @SuppressWarnings("AnonymousInnerClass")
-    private static List<VirtualArrayRestRep> getVirtualArrayList(
-            final Resource varraysResource,
+    @SuppressWarnings({"AnonymousInnerClass", "SameParameterValue"})
+    private static List<VirtualArrayRestRep> parseVirtualArrays(
+            final String path,
             final ObjectMapper objectMapper,
             final PropertiesResolver propertiesResolver)
             throws IOException {
-        final byte[] content = Files.readAllBytes(varraysResource.getFile().toPath());
-        final String json = propertiesResolver.resolve(new String(content, UTF_8));
-        return objectMapper.readValue(json, new TypeReference<List<VirtualArrayRestRep>>() {
-        });
+        try (final InputStream is = ViPRStubServiceImpl.class.getClassLoader().getResourceAsStream(path);
+             final InputStreamReader isr = new InputStreamReader(is, UTF_8);
+             final BufferedReader br = new BufferedReader(isr)
+        ) {
+            final String json = propertiesResolver.resolve(br.lines().collect(Collectors.joining("\n")));
+            return objectMapper.readValue(json, new TypeReference<List<VirtualArrayRestRep>>() {
+            });
+        }
     }
 
-    private static String getVirtualPoolTemplate(
-            final Resource varraysResource,
+    @SuppressWarnings({"AnonymousInnerClass", "SameParameterValue"})
+    private static List<StoragePoolRestRep> parseStoragePools(
+            final String path,
+            final ObjectMapper objectMapper,
             final PropertiesResolver propertiesResolver)
             throws IOException {
-        final byte[] content = Files.readAllBytes(varraysResource.getFile().toPath());
-        return propertiesResolver.resolve(new String(content, UTF_8));
+        try (final InputStream is = ViPRStubServiceImpl.class.getClassLoader().getResourceAsStream(path);
+             final InputStreamReader isr = new InputStreamReader(is, UTF_8);
+             final BufferedReader br = new BufferedReader(isr)
+        ) {
+            final String json = propertiesResolver.resolve(br.lines().collect(Collectors.joining("\n")));
+            return objectMapper.readValue(json, new TypeReference<List<StoragePoolRestRep>>() {
+            });
+        }
+    }
+
+    @SuppressWarnings({"AnonymousInnerClass", "SameParameterValue"})
+    private static List<StorageSystemRestRep> parseStorageSystems(
+            final String path,
+            final ObjectMapper objectMapper,
+            final PropertiesResolver propertiesResolver)
+            throws IOException {
+        try (final InputStream is = ViPRStubServiceImpl.class.getClassLoader().getResourceAsStream(path);
+             final InputStreamReader isr = new InputStreamReader(is, UTF_8);
+             final BufferedReader br = new BufferedReader(isr)
+        ) {
+            final String json = propertiesResolver.resolve(br.lines().collect(Collectors.joining("\n")));
+            return objectMapper.readValue(json, new TypeReference<List<StorageSystemRestRep>>() {
+            });
+        }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static String getVirtualPoolTemplate(
+            final String path,
+            final PropertiesResolver propertiesResolver)
+            throws IOException {
+        try (final InputStream is = ViPRStubServiceImpl.class.getClassLoader().getResourceAsStream(path);
+             final InputStreamReader isr = new InputStreamReader(is, UTF_8);
+             final BufferedReader br = new BufferedReader(isr)
+        ) {
+            return propertiesResolver.resolve(br.lines().collect(Collectors.joining("\n")));
+        }
     }
 }

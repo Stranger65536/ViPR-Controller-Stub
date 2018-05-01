@@ -1,1 +1,1 @@
-Vipr simulation application
+ViPR simulation application
