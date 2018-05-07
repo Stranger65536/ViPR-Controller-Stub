@@ -61,7 +61,7 @@ public class StubAssignPoolsIntegrationTest {
         assertThat(updated.getAssignedStoragePools().stream()
                 .map(RelatedResourceRep::getId).map(URI::toString).collect(Collectors.toList()), equalTo(
                 singletonList(new URI(propertiesResolver.resolve(
-                        "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:" +
+                        "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:" +
                                 "vdc1/storage-pools/urn:storageos:StoragePool:${spid1}:vdc1")).toString())));
     }
 }

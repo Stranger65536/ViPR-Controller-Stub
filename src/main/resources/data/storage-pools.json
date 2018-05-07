@@ -4,7 +4,7 @@
     "id": "urn:storageos:StoragePool:${spid1}:vdc1",
     "link": {
       "rel": "self",
-      "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid1}:vdc1"
+      "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid1}:vdc1"
     },
     "creation_time": 1460121496484,
     "inactive": false,
@@ -62,10 +62,10 @@
     "long_term_retention": false,
     "supported_resource_types": "THIN_AND_THICK",
     "storage_system": {
-      "id": "urn:storageos:storage_system:${ssid1}:vdc1",
+      "id": "urn:storageos:StorageSystem:${ssid1}:vdc1",
       "link": {
         "rel": "self",
-        "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1"
+        "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1"
       }
     },
     "max_thin_pool_subscription_percentage": 300,
@@ -81,7 +81,7 @@
     "id": "urn:storageos:StoragePool:${spid2}:vdc1",
     "link": {
       "rel": "self",
-      "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid2}:vdc1"
+      "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid2}:vdc1"
     },
     "creation_time": 1460121496484,
     "inactive": false,
@@ -139,10 +139,10 @@
     "long_term_retention": false,
     "supported_resource_types": "THIN_AND_THICK",
     "storage_system": {
-      "id": "urn:storageos:storage_system:${ssid1}:vdc1",
+      "id": "urn:storageos:StorageSystem:${ssid1}:vdc1",
       "link": {
         "rel": "self",
-        "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1"
+        "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1"
       }
     },
     "max_thin_pool_subscription_percentage": 300,
@@ -158,7 +158,7 @@
     "id": "urn:storageos:StoragePool:${spid3}:vdc1",
     "link": {
       "rel": "self",
-      "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid3}:vdc1"
+      "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid3}:vdc1"
     },
     "creation_time": 1460121496484,
     "inactive": false,
@@ -216,10 +216,10 @@
     "long_term_retention": false,
     "supported_resource_types": "THIN_AND_THICK",
     "storage_system": {
-      "id": "urn:storageos:storage_system:${ssid1}:vdc1",
+      "id": "urn:storageos:StorageSystem:${ssid1}:vdc1",
       "link": {
         "rel": "self",
-        "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1"
+        "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1"
       }
     },
     "max_thin_pool_subscription_percentage": 300,
@@ -235,7 +235,7 @@
     "id": "urn:storageos:StoragePool:${spid4}:vdc1",
     "link": {
       "rel": "self",
-      "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid4}:vdc1"
+      "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1/storage-pools/urn:storageos:StoragePool:${spid4}:vdc1"
     },
     "creation_time": 1460121496484,
     "inactive": false,
@@ -293,10 +293,10 @@
     "long_term_retention": false,
     "supported_resource_types": "THIN_AND_THICK",
     "storage_system": {
-      "id": "urn:storageos:storage_system:${ssid1}:vdc1",
+      "id": "urn:storageos:StorageSystem:${ssid1}:vdc1",
       "link": {
         "rel": "self",
-        "href": "/vdc/storage-systems/urn:storageos:storage_system:${ssid1}:vdc1"
+        "href": "/vdc/storage-systems/urn:storageos:StorageSystem:${ssid1}:vdc1"
       }
     },
     "max_thin_pool_subscription_percentage": 300,
