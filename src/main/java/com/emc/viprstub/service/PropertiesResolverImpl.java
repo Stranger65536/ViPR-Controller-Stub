@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class PropertiesResolverImpl implements PropertiesResolver {
-    private static final Pattern PATTERN = Pattern.compile("\\$\\{(?<key>.+)}");
+    private static final Pattern PATTERN = Pattern.compile("\\$\\{(?<key>.+?)}");
 
     private final Random random;
     private final Map<String, String> placeholders;
